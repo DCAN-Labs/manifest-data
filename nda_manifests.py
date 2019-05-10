@@ -72,7 +72,8 @@ class Manifest:
             except FileExistsError:
                 pass
             json.dump(vars(manifest_record),
-                      open(path, "w+"))
+                      open(path, "w+"),
+                      indent=4, separators=(',', ': '))
 
     def create_from_dir(self, directory):
         for (path, dirnames, filenames) in os.walk(directory):
@@ -94,14 +95,15 @@ class Manifest:
             self.files = None
 
     def output_as_file(self, filename):
-        json.dump(json.loads(self.output_as_json), open(filename, 'w+'))
+        json.dump(json.loads(self.output_as_json), open(filename, 'w+'),
+                  indent=4, separators=(',', ': '))
 
     @property
     def output_as_json(self):
         output = {'files': []}
         for manifest_record in self.files:
             output['files'].append(vars(manifest_record))
-        return json.dumps(output)
+        return json.dumps(output, indent=4, separators=(',', ': '))
 
 
 def load_args():
